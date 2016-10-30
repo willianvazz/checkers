@@ -1,0 +1,13 @@
+<template name="Chat">
+	<h3>Chat Room:</h3>
+	<div class="wrap-messages">
+		{{#each messages}}
+			{{> Message}}
+		{{/each}}
+	</div>
+	{{#if currentUser}}
+		<form class="new-message">
+			<input type="text" name="text" placeholder="Type and hit enter to send a message!">
+		</form>
+	{{/if}}
+</template>

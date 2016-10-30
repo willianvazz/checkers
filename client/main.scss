@@ -1,0 +1,93 @@
+/*variables*/
+$orange: #F36E21;
+$white: #fff;
+$lightGray: #EEE;
+$bShadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+
+body{
+	background: $lightGray;
+}
+header{
+	color: #FFF;
+	background: $orange;
+	padding: 20px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 70px;  
+	box-shadow: $bShadow;
+}
+h1{
+	margin: 0;
+	font-size: 1.6em ;
+	float: left;
+}
+.login-buttons-dropdown-align-{
+	float: right;
+}
+.login-buttons-dropdown-align- {
+	.login-link-text{
+		color: #fff;
+	    text-decoration: none;
+	}
+}
+.accounts-dialog{
+	margin-left: -180px;
+}
+.accounts-dialog a:hover{
+	color: $orange;
+}
+#login-buttons .login-button, .accounts-dialog .login-button{
+	background: $orange;
+}
+.wrapper{
+	margin-top: 60px;
+	padding: 50px 100px;
+	clear: both;
+}
+
+/* -----STYLE FOR INTRO STARTS----- */
+.wrap-intro, .wrap-chat, .wrap-peopleOnline{
+	display: inline-block;
+	height: 400px;
+}
+.wrap-chat, .wrap-peopleOnline{
+	padding: 10px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+.wrap-intro{
+	width: 100%;
+}
+.wrap-chat{
+	width: 58%;
+	float: left;
+	background: lightgrey;
+}
+.wrap-peopleOnline{
+	width: 40%;
+	float: right;
+	background: rgba(0, 204, 0, .45);
+}
+.wrap-messages{
+	height: 280px;
+	overflow-y: overlay;
+	background: white;
+	border: solid 1px #c6c6c6;
+	padding:10px;
+}
+.new-message input{
+	width: 100%;
+	padding: 20px;
+	margin-top: 3px;
+}
+/* -----STYLE FOR INTRO ENDS----- */
+
+
+
+
+
+
+
+
+

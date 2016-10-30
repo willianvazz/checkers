@@ -18,12 +18,12 @@ blaze@2.1.9
 blaze-html-templates@1.0.5
 blaze-tools@1.0.10
 boilerplate-generator@1.0.11
+bootstrap@1.0.1
 caching-compiler@1.1.8
 caching-html-compiler@1.0.7
 callback-hook@1.0.10
 check@1.2.4
 coffeescript@1.0.17
-datariot:ganalytics@0.2.1
 ddp@1.2.5
 ddp-client@1.2.9
 ddp-common@1.2.7
@@ -39,6 +39,7 @@ erasaur:meteor-lodash@4.0.0
 es5-shim@4.6.15
 fastclick@1.0.13
 fortawesome:fontawesome@4.6.3
+fourseven:scss@3.10.0
 geojson-utils@1.0.10
 gwendall:auth-client-callbacks@0.1.0
 hot-code-push@1.0.4
