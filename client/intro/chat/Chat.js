@@ -1,3 +1,4 @@
+//allowing the client to have access to collection chat from the server
 Template.Chat.onCreated(function (){
 	Meteor.subscribe('chat');
 });
@@ -20,7 +21,8 @@ Template.Chat.events({
 });
 
 Template.Chat.helpers({
+	//method to send return all messages
 	messages(){
 		return Chat.find({});
 	}
-})
+});

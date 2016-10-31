@@ -1,3 +1,5 @@
 <template name="Message">
-	<p>{{text}}</p>
+	<div class="wrap-message">
+		<p class="chat-message {{#if ownMessage username=owner }}own-message{{/if}}">{{username}}: {{text}}</p>
+	</div>
 </template>

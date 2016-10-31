@@ -1,3 +1,8 @@
 <template name="PeopleOnline">
-	<h3>People Online:</h3>
+	<h3><i class="fa fa-users"></i> People Online:</h3>
+	<div class="people-online">
+		{{#each onlineUsers}}
+			{{> User}}
+		{{/each}}
+	</div>
 </template>
