@@ -1,1 +1,1 @@
-import '../lib/accounts-config.js';
+import '../lib/accountsConfig.js';
