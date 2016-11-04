@@ -11,21 +11,28 @@ Chat.allow({
 
 Meteor.methods({
 	'message.insert'(text, clientToken){
-		var serverToken = makeToken;	
-		console.log("servertoken: ", serverToken);
+		var serverToken = Meteor.checkers.createToken(this.connection);	
+		var checkToken = clientToken.localeCompare(serverToken);
 
-		check(text, String);
 		//make sure the user is logged before adding a task
-		if( ! this.userId){
+		if( !this.userId ){
 			throw new Meteor.Error('not-authorized');
 		}
 
-		//inserting the message in the collection
-		Chat.insert({
-			text,
-			createdAt: new Date(),
-			owner: this.userId,
-			username: Meteor.users.findOne(this.userId).username,
-		});
+		//if client and server token are the same insert the message
+		if( checkToken == 0 ) {
+			//inserting the message in the collection
+			check(text, String);
+			Chat.insert({
+				text,
+				createdAt: new Date(),
+				owner: this.userId,
+				username: Meteor.users.findOne(this.userId).username,
+			});
+		}
 	},
 });
+
+
+
+
