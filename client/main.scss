@@ -68,6 +68,96 @@ h1{
 .wrap-intro{
 	width: 100%;
 }
+.challenge{
+	padding: 10px;
+	margin-bottom: 10px;
+	background: #CFD8DC;
+	height: 50px;
+	animation: bounce 2s linear infinite;
+}
+.challenge p{
+	display: inline-block;
+	float: left;
+	font-size: 1.3em;
+	padding-top: 5px;
+}
+@keyframes bounce {
+	0% {
+		transform:translateY(-100%);
+		opacity: 0;
+	}
+	5% {
+		transform:translateY(-100%);
+		opacity: 0;
+	}
+	15% {
+		transform:translateY(0);
+		padding-bottom: 5px;
+	}
+	30% {
+		transform:translateY(-50%);
+	}
+	40% {
+		transform:translateY(0%);
+		padding-bottom: 6px;
+	}
+	50% {
+		transform:translateY(-30%);
+	}
+	70% {
+		transform:translateY(0%);
+		padding-bottom: 7px;
+	}
+	80% {
+		transform:translateY(-15%);
+	}
+	90% {
+		transform:translateY(0%);
+		padding-bottom: 8px;
+	}
+	95% {
+		transform:translateY(-7%);
+	}
+	97% {
+		transform:translateY(0%);
+		padding-bottom: 9px;
+	}
+	99% {
+		transform:translateY(-3%);
+	}
+	100% {
+		transform:translateY(0);
+		padding-bottom: 9px;
+		opacity: 1;
+	}
+}
+.challenge:hover{
+	animation: none;
+}
+.accept, .deny{
+	border-radius: 5px;
+	padding: 5px 20px;
+	width: 145px;
+	color: white;
+	text-align: center;
+	float: right;
+	margin: 0px 10px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.16), 0 1px 3px rgba(0,0,0,0.23);
+	cursor: pointer;
+}
+.accept{
+	background: #1BB13E;
+}
+.accept:hover{
+	background: #117027;
+}
+.deny{
+	background: #C13939;
+}
+.deny:hover{
+	background: #962b2b;
+}
+
 /* -----STYLE FOR INTRO ENDS----- */
 
 /* -----STYLE FOR CHAT STARTS----- */

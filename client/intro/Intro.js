@@ -6,8 +6,35 @@ Template.Intro.onRendered(function(){
 			//Error handling code
 		}
 		else {
-			console.log(result);
 			Session.set("mySecretToken", result);
 		}
 	});
+});
+
+Template.Intro.helpers({
+	isChallenged(){
+		if(Meteor.user().challenger){
+			return Meteor.user().challenger;
+		}else{
+			return "";
+		}
+	},
+	challengeAccepted(){
+		return Meteor.user().challengerId;
+	},
+	redirectGame(){
+		console.log('username: ', Meteor.user().username);
+		console.log('username: ', Meteor.user().challenger);
+		//FlowRouter.redirect( '/game/'+ Meteor.user().username +"-vs-"+ Meteor.user().challenger );
+	}
+});
+
+Template.Intro.events({
+	'click .accept'(evt){
+		var token = Session.get("mySecretToken");
+		console.log("matchStatus: ", Meteor.user().matchStatus);
+		Meteor.call( 'userMatch.update',  Meteor.user().challengerId, true, "", "", token );
+		console.log("matchStatus: ", Meteor.user().matchStatus);
+		//FlowRouter.redirect( '/game/'+ Meteor.user().username +"-vs-"+ Meteor.user().challenger );
+	}
 });

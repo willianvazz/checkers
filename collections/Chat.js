@@ -11,6 +11,7 @@ Chat.allow({
 
 Meteor.methods({
 	'message.insert'(text, clientToken){
+		//creating token in the server to compare with the one from the client
 		var serverToken = Meteor.checkers.createToken(this.connection);	
 		var checkToken = clientToken.localeCompare(serverToken);
 

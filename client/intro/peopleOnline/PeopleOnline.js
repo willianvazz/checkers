@@ -4,7 +4,7 @@ Template.PeopleOnline.onCreated(function(){
 
 Template.PeopleOnline.helpers({
 	onlineUsers(){
-		//retrieving users online and sorting alpha
+		//retrieving users online
 		return Meteor.users.find({ "status.online": true });
 	}
 });

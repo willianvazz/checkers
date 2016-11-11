@@ -1,5 +1,14 @@
 <template name="Intro">
 	<div class="wrap-intro">
+		{{#if isChallenged}}
+			<div class="challenge">
+				<p><strong>{{isChallenged}}</strong> has challenged you for a game!</p>
+				<div class="wrap-btn-accept-deny">
+					<span class="deny">Deny</span>
+					<span class="accept">Accept</span>
+				</div>
+			</div>
+		{{/if}}
 		<div class="wrap-chat">
 			<!-- Rendering chat template -->
 			{{> Chat}}
@@ -7,7 +16,11 @@
 		<div class="wrap-peopleOnline">
 			<!-- Rendering PeopleOnline template -->
 			{{> PeopleOnline}}
-		</div>
+		</div> 
+
+		{{#if challengeAccepted}}
+			{{redirectGame}}
+		{{/if}}
 		
 	</div>
 </template>
