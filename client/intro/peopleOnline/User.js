@@ -16,6 +16,6 @@ Template.User.events({
 		console.log('challengerId: ', challengerId);
 
 		//if user clicked on another user to play against, update user's document
-		Meteor.call( 'userMatch.update', challenged, true, challenger, challengerId, token );
+		Meteor.call( 'userMatch.update', challenged, false, challenger, challengerId, token );
 	},
 });

@@ -12,29 +12,36 @@ Template.Intro.onRendered(function(){
 });
 
 Template.Intro.helpers({
+	// checking if a user has been challenged
 	isChallenged(){
-		if(Meteor.user().challenger){
+		try{
 			return Meteor.user().challenger;
-		}else{
+		}catch(err){
 			return "";
 		}
 	},
+	//check if the challenge has been accepted
 	challengeAccepted(){
-		return Meteor.user().challengerId;
+		try{
+			return Meteor.user().matchStatus;
+		}catch(err){
+			return "";
+		}
 	},
+	//redirect the user if challenge was accepted
 	redirectGame(){
-		console.log('username: ', Meteor.user().username);
-		console.log('username: ', Meteor.user().challenger);
-		//FlowRouter.redirect( '/game/'+ Meteor.user().username +"-vs-"+ Meteor.user().challenger );
+		console.log('username Redirect Meteor: ', Meteor.user().username);
+		console.log('username Redirect Challenger: ', Meteor.user().challenger);
+		FlowRouter.redirect( '/game/'+ Meteor.user().challenger +"-vs-"+ Meteor.user().username );
 	}
 });
 
 Template.Intro.events({
 	'click .accept'(evt){
-		var token = Session.get("mySecretToken");
-		console.log("matchStatus: ", Meteor.user().matchStatus);
-		Meteor.call( 'userMatch.update',  Meteor.user().challengerId, true, "", "", token );
-		console.log("matchStatus: ", Meteor.user().matchStatus);
-		//FlowRouter.redirect( '/game/'+ Meteor.user().username +"-vs-"+ Meteor.user().challenger );
+		var token = Session.get("mySecretToken"),
+			challenger = Meteor.user().username;
+		
+		Meteor.call( 'userMatch.update',  Meteor.user().challengerId, true, challenger, "", token );
+		FlowRouter.redirect( '/game/'+ Meteor.user().username +"-vs-"+ Meteor.user().challenger );
 	}
 });
