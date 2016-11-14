@@ -30,8 +30,6 @@ Template.Intro.helpers({
 	},
 	//redirect the user if challenge was accepted
 	redirectGame(){
-		console.log('username Redirect Meteor: ', Meteor.user().username);
-		console.log('username Redirect Challenger: ', Meteor.user().challenger);
 		FlowRouter.redirect( '/game/'+ Meteor.user().challenger +"-vs-"+ Meteor.user().username );
 	}
 });
@@ -41,7 +39,9 @@ Template.Intro.events({
 		var token = Session.get("mySecretToken"),
 			challenger = Meteor.user().username;
 		
+		//letting the user that has challenged know that challenged was accepted
 		Meteor.call( 'userMatch.update',  Meteor.user().challengerId, true, challenger, "", token );
+		//redirecting the user to the game page
 		FlowRouter.redirect( '/game/'+ Meteor.user().username +"-vs-"+ Meteor.user().challenger );
 	}
 });
