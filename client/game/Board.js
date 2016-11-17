@@ -43,9 +43,6 @@ Template.Board.onRendered(function(){
 
 	//creating pieces for player at the top of the board
 	for( let i = 0; i < PIECES_Y; i++ ){
-
-		offset = ( ( i % 2 ) != 0 ) ? 50 : 0;
-
 		for (let j = 0; j < PIECES_X; j++) {
 			var offsetX = 120,
 				offsetXOtherPieces = 40,
@@ -72,19 +69,12 @@ Template.Board.onRendered(function(){
 			svgStage.appendChild(cir);
 			cir.addEventListener( "mousedown", function(){
 				console.log("in mousedown");
-				setMove( "p1" + i + j )}, false );
-			
-			
-
-			
+				setMove( "p1" + i + j )}, false );	
 		}
 	}
 
 	// //creating pieces for player at the bottom of the board
 	for( i = 0; i < PIECES_Y; i++ ){
-
-		offset = ( ( i % 2 ) != 0 ) ? 50 : 0;
-
 		for (j = 0; j < PIECES_X; j++) {
 			var offsetX = 120,
 				offsetXOtherPieces = 40,
@@ -109,6 +99,7 @@ Template.Board.onRendered(function(){
 			cir.setAttribute( "id", "p2" + i + j );
 			cir.setAttribute( "class", "player2" );
 			//cir.addEventListener( "onmousedown", hello() );
+			//not using ES6 way
 			(function(i,j) {
 				cir.addEventListener( "mousedown", function(){setMove( "p2" + i + j )}, false );
 			})(i,j);
