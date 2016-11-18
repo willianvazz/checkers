@@ -68,7 +68,7 @@ Template.Board.onRendered(function(){
 			cir.setAttribute( "class", "player1" );
 			svgStage.appendChild(cir);
 			cir.addEventListener( "mousedown", function(){
-				console.log("in mousedown");
+				// console.log("in mousedown");
 				setMove( "p1" + i + j )}, false );	
 		}
 	}
@@ -112,11 +112,11 @@ Template.Board.onRendered(function(){
 function init(){
 	document.getElementById("svgStage").addEventListener( "mousemove", mouseMoveEvListener, false );
 	document.getElementById("svgStage").addEventListener( "mouseup", mouseUpEvListener, false );
-	document.getElementById("svgStage").addEventListener( "mousemove", 
-		function(evt){
-			// console.log(evt.clientX, evt.clientY);
-			console.log(document.body.scrollTop);
-		}, false );
+	// document.getElementById("svgStage").addEventListener( "mousemove", 
+	// 	function(evt){
+	// 		// console.log(evt.clientX, evt.clientY);
+	// 		console.log(document.body.scrollTop);
+	// 	}, false );
 
 }
 
@@ -134,8 +134,10 @@ function mouseUpEvListener() {
 	// if I am dragging something
 	if( moverId ){
 		var curX = parseInt( document.getElementById( moverId ).getAttribute( "cx" ) ),
-			curY = parseInt( document.getElementById( moverId ).getAttribute( "cy" ) ),
-			hit  = checkHit( curX, curY );
+			curY = parseInt( document.getElementById( moverId ).getAttribute( "cy" ) );
+		console.log("curX:", curX, " curY:", curY);
+		var hit  = checkHit( curX, curY );
+
 
 		if( hit ){
 			moverId = undefined;
@@ -157,9 +159,9 @@ function checkHit(x, y) {
 	for( var i = 0; i < ROWS; i++ ){
 		for (var j = 0; j < COLS; j++) {
 			var drop = document.getElementById( "target_" + i + j ).getBBox();
-
+			console.log(drop);
 			for( var k in drop ){
-				console.log(k, drop[k]);
+				// console.log(k, drop[k]);
 			}
 
 			//fill in the target coord
@@ -167,6 +169,12 @@ function checkHit(x, y) {
 
 			if( x > drop.x && x < ( drop.x + drop.width ) &&
 				y > drop.y && y < ( drop.y + drop.height ) ){
+
+				//Center the piece to the square
+				var moverEle = document.getElementById( moverId );
+				moverEle.setAttribute( "cx", drop.x + 40);
+				moverEle.setAttribute( "cy", drop.y + 40);
+
 				return true;
 			}
 		}
@@ -180,7 +188,7 @@ function setMove( id ){
 	myX = parseInt( document.getElementById( moverId ).getAttribute( "cx" ) );
 	myY = parseInt( document.getElementById( moverId ).getAttribute( "cy" ) );
 
-	console.log("myX:", myX, " myY:", "\n");
+	console.log("myX:", myX, " myY:", myY);
 }
 
 function hello(){
