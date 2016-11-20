@@ -134,7 +134,7 @@ function mouseUpEvListener() {
 	// if I am dragging something
 	if( moverId ){
 		var curX = parseInt( document.getElementById( moverId ).getAttribute( "cx" ) ),
-			curY = parseInt( document.getElementById( moverId ).getAttribute( "cy" ) );
+				curY = parseInt( document.getElementById( moverId ).getAttribute( "cy" ) );
 		console.log("curX:", curX, " curY:", curY);
 		var hit  = checkHit( curX, curY );
 
@@ -159,7 +159,8 @@ function checkHit(x, y) {
 	for( var i = 0; i < ROWS; i++ ){
 		for (var j = 0; j < COLS; j++) {
 			var drop = document.getElementById( "target_" + i + j ).getBBox();
-			console.log(drop);
+
+			//console.log(drop);
 			for( var k in drop ){
 				// console.log(k, drop[k]);
 			}
@@ -169,13 +170,19 @@ function checkHit(x, y) {
 
 			if( x > drop.x && x < ( drop.x + drop.width ) &&
 				y > drop.y && y < ( drop.y + drop.height ) ){
-
-				//Center the piece to the square
 				var moverEle = document.getElementById( moverId );
-				moverEle.setAttribute( "cx", drop.x + 40);
-				moverEle.setAttribute( "cy", drop.y + 40);
+				var newY = moverEle.getAttribute("cy");
+				//console.log("myY:", myY, "newY:", newY);
+				if( ((j + i) %2 != 0 ) && (newY > myY)){
+					//Center the piece to the square
+					
+					moverEle.setAttribute( "cx", drop.x + 40);
+					moverEle.setAttribute( "cy", drop.y + 40);
 
-				return true;
+					return true;
+				}else{
+					return false;
+				}
 			}
 		}
 	}
