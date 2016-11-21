@@ -1,0 +1,23 @@
+<template name="GameInfo">
+	<div class="wrap-game-info">
+		<h3><i class="fa fa-info-circle" aria-hidden="true"></i> Game Information</h3>
+		
+		<div class="wrap-game-players">
+			<p class="game-p1">Player 1</p>
+			<p class="game-vs">-VS-</p>
+			<p class="game-p2">Player 2</p>
+		</div>
+		
+		<h3><i class="fa fa-trophy" aria-hidden="true"></i> Scores</h3>
+
+		<h3><i class="fa fa-comments"></i> Chat</h3>
+		<div class="wrap-messages">
+			
+		</div>
+		{{#if currentUser}}
+			<form class="new-message">
+				<input type="text" name="text" placeholder="Type and press enter to send a message!">
+			</form>
+		{{/if}}
+	</div>
+</template>
