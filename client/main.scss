@@ -3,6 +3,7 @@ $orange: #F36E21;
 $darkOrange: #ef5902;
 $white: #fff;
 $lightGray: #EEE;
+$lightBlueGray: #CFD8DC;
 $lightBlue: rgba(8, 157, 227, .9);
 
 $bShadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
@@ -61,7 +62,7 @@ h1{
 	display: inline-block;
 	height: 400px;
 }
-.wrap-chat, .wrap-peopleOnline{
+.wrap-chat, .wrap-peopleOnline, .wrap-game-info{
 	padding: 10px;
 	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
@@ -71,7 +72,7 @@ h1{
 .challenge{
 	padding: 10px;
 	margin-bottom: 10px;
-	background: #CFD8DC;
+	background: $lightBlueGray;
 	height: 50px;
 	animation: bounce 2s linear infinite;
 }
@@ -164,7 +165,7 @@ h1{
 .wrap-chat{
 	width: 58%;
 	float: left;
-	background: #CFD8DC;
+	background: $lightBlueGray;
 }
 .wrap-messages{
 	height: 280px;
@@ -204,7 +205,7 @@ h1{
 .wrap-peopleOnline{
 	width: 40%;
 	float: right;
-	background: /*rgba(0, 204, 0, .35)*/ /*rgb(142, 210, 201)*/ #CFD8DC;
+	background: /*rgba(0, 204, 0, .35)*/ /*rgb(142, 210, 201)*/ $lightBlueGray;
 }
 .people-online{
 	height: 322px;
@@ -259,6 +260,41 @@ h1{
 #svgStage{
 	background: pink;
 	border: 1px solid black;
+	float: left;
+	box-shadow: 0 2px 22px rgba(0, 0, 0, .42), 0 1px 5px rgba(0, 0, 0, 0.34);
+	margin-bottom: 50px;
+}
+.wrap-game-info{
+	background: red;
+	display: inline-block;
+	width: 430px;
+	margin-left: 20px;
+	background: $lightBlueGray;
+	height: 640px;
+}
+.wrap-game-players{
+	margin-top: 30px;
+}
+.game-p1, .game-p2, .game-vs{
+	font-size: 1.2em;
+	font-weight: 500;
+	/*color: #37474F;*/
+	display: inline-block;
+	color: white;
+	text-align: center;
+	padding: 10px;
+}
+.game-p1{
+	width: 40%;
+	background-color: red;
+}
+.game-p2{
+	width: 40%;
+	background-color: green;
+}
+.game-vs{
+	width: 18%;
+	background-color: black;
 }
 /* -----STYLE FOR GAME ENDS----- */
 
