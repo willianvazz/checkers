@@ -126,7 +126,7 @@ function mouseMoveEvListener( evt ){
 
 		//actually move the piece
 		moverEle.setAttribute( "cx", evt.clientX  - 100);
-		moverEle.setAttribute( "cy", evt.clientY - 170 + document.body.scrollTop );
+		moverEle.setAttribute( "cy", evt.clientY - 110 + document.body.scrollTop );
 	}
 }
 
