@@ -175,7 +175,6 @@ function checkHit(x, y) {
 				//console.log("myY:", myY, "newY:", newY);
 				if( ((j + i) %2 != 0 ) && (newY > myY)){
 					//Center the piece to the square
-					
 					moverEle.setAttribute( "cx", drop.x + 40);
 					moverEle.setAttribute( "cy", drop.y + 40);
 
