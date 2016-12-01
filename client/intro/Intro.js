@@ -43,17 +43,19 @@ Template.Intro.events({
 		var token = Session.get("mySecretToken"),
 			challenger = Meteor.user().username,
 			gameId = "";
-		
-		//letting the user that has challenged know that challenged was accepted
-		Meteor.call( 'userMatch.update',  Meteor.user().challengerId, true, challenger, "", token );
 
 		console.log("Challenger: ", Meteor.user().challenger);
 		console.log("Me: ", Meteor.user().username);
 
-		Meteor.call( 'game.init', Meteor.user().challenger, Meteor.user().username, token, function(error, result){
+		Meteor.call('game.init', Meteor.user().challenger, Meteor.user().username, token, function(error, result){
 			gameId = result;
 		});
 		console.log('id: ', gameId);
+		
+		//letting the user that has challenged know that challenged was accepted
+		Meteor.call('userMatch.update',  Meteor.user().challengerId, true, challenger, "", token);
+		
+
 		//redirecting the user to the game page
 		//FlowRouter.redirect( '/game/'+ Meteor.user().username +"-vs-"+ Meteor.user().challenger );
 	}
