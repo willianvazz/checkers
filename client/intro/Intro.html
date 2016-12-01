@@ -17,10 +17,12 @@
 			<!-- Rendering PeopleOnline template -->
 			{{> PeopleOnline}}
 		</div> 
-
+		<!-- check is the opponent has accepted -->
 		{{#if challengeAccepted}}
 			{{redirectGame}}
 		{{/if}}
-		
+	</div>
+	<div class="wrap-rules-intro">
+		{{> Rules}}
 	</div>
 </template>
