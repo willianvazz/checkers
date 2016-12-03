@@ -31,7 +31,7 @@ Meteor.methods({
 			throw new Meteor.Error('not-authorized');
 		}
 
-		matchId = "123";
+		matchId = "1234";
 		Meteor.users.update(Meteor.userId(), {
 			$set: {
 				matchStatus: true,
