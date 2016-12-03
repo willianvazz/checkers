@@ -1,4 +1,4 @@
-import '../lib/createToken.js';
+var token = require('../lib/token.js');
 
 Chat = new Mongo.Collection('chat');
 
@@ -11,26 +11,18 @@ Chat.allow({
 
 Meteor.methods({
 	'message.insert'(text, clientToken){
-		//creating token in the server to compare with the one from the client
-		var serverToken = Meteor.checkers.createToken(this.connection);	
-		var checkToken = clientToken.localeCompare(serverToken);
-
 		//make sure the user is logged before adding a task
-		if( !this.userId ){
+		if( !this.userId || !token.validateToken(clientToken) ){
 			throw new Meteor.Error('not-authorized');
 		}
 
-		//if client and server token are the same insert the message
-		if( checkToken == 0 ) {
-			//inserting the message in the collection
-			check(text, String);
-			Chat.insert({
-				text,
-				createdAt: new Date(),
-				owner: this.userId,
-				username: Meteor.users.findOne(this.userId).username,
-			});
-		}
+		check(text, String);
+		Chat.insert({
+			text,
+			createdAt: new Date(),
+			owner: this.userId,
+			username: Meteor.users.findOne(this.userId).username,
+		});
 	},
 });
 

@@ -1,4 +1,5 @@
-import '../lib/createToken.js';
+import createToken from '../lib/token.js';
+import generatePieces from '../lib/generatePieces.js';
 
 GameUtil = new Mongo.Collection('gameutil');
 
@@ -12,7 +13,7 @@ GameUtil.allow({
 Meteor.methods({
 	'game.init'(challenger, challenged, clientToken){
 		//creating token in the server to compare with the one from the client
-		var serverToken = Meteor.checkers.createToken(this.connection);	
+		var serverToken = createToken(this.connection);	
 		var checkToken = clientToken.localeCompare(serverToken);
 
 		//make sure the user is logged before adding a task
@@ -23,19 +24,16 @@ Meteor.methods({
 		//if client and server token are the same insert the message
 		if( checkToken == 0 ) {
 			//inserting the information in the collection
+			initialPieces = generatePieces(challenger, challenged);
 			var id = GameUtil.insert({
-				createdAt: new Date(),
-				player1: {
-					name: challenger
-				},
-				player2: {
-					name: challenged
-				},
+				"createdAt": new Date(),
+				"player1": challenger,
+				"player2": challenged,
+				"pieces": initialPieces,
+				"result": null
 			});
 
-			console.log('id server: ', id);
 			return id;
 		}
-
 	},
 });

@@ -7,6 +7,7 @@ Template.Intro.onRendered(function(){
 		}
 		else {
 			Session.set("mySecretToken", result);
+			Meteor.call('user.clearChallenge', Meteor.userId(), result);
 		}
 	});
 });
@@ -19,7 +20,7 @@ Template.Intro.helpers({
 	// checking if a user has been challenged
 	isChallenged(){
 		try{
-			return Meteor.user().challenger;
+			return Meteor.user().isChallenged;
 		}catch(err){
 			return "";
 		}
@@ -34,29 +35,14 @@ Template.Intro.helpers({
 	},
 	//redirect the user if challenge was accepted
 	redirectGame(){
-		//FlowRouter.redirect( '/game/'+ Meteor.user().challenger +"-vs-"+ Meteor.user().username );
+		FlowRouter.redirect( '/game/'+ Meteor.user().challenger +"-vs-"+ Meteor.user().username );
 	}
 });
 
 Template.Intro.events({
 	'click .accept'(evt){
-		var token = Session.get("mySecretToken"),
-			challenger = Meteor.user().username,
-			gameId = "";
+		var token = Session.get("mySecretToken");
 
-		console.log("Challenger: ", Meteor.user().challenger);
-		console.log("Me: ", Meteor.user().username);
-
-		Meteor.call('game.init', Meteor.user().challenger, Meteor.user().username, token, function(error, result){
-			gameId = result;
-		});
-		console.log('id: ', gameId);
-		
-		//letting the user that has challenged know that challenged was accepted
-		Meteor.call('userMatch.update',  Meteor.user().challengerId, true, challenger, "", token);
-		
-
-		//redirecting the user to the game page
-		//FlowRouter.redirect( '/game/'+ Meteor.user().username +"-vs-"+ Meteor.user().challenger );
+		Meteor.call('user.acceptChallenge', token);
 	}
 });
