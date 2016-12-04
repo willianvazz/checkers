@@ -1,5 +1,6 @@
-var token = require('../lib/token.js');
 import createPieces from '../lib/game.js';
+
+var token = require('../lib/token.js');
 
 Game = new Mongo.Collection('game');
 
@@ -11,18 +12,20 @@ Game.allow({
 });
 
 Meteor.methods({
-	'game.updatePiece'(gameId, pieceId, cx, cy, clientToken){
-		if( !this.userId || !token.validateToken(clientToken, this.connection) ){
+	'game.updatePiece'(gameId, piecePos, cx, cy, clientToken){
+		if( !this.userId ){
 			throw new Meteor.Error('not-authorized');
 		}
 
-		var game = Game.update({_id: gameId, "pieces.id": parseInt(pieceId) }, {
-			$set: {
-				"pieces.$.cx": cx,
-				"pieces.$.cy": cy,
-				turn: Meteor.user().challenger
-			}
-		});
+		if (token.validateToken(clientToken, this.connection)){
+			var game = Game.update({_id: gameId, "pieces.data-pos": parseInt(piecePos) }, {
+				$set: {
+					"pieces.$.cx": cx,
+					"pieces.$.cy": cy,
+					turn: Meteor.user().challenger
+				}
+			});
+		}
 	},
 });
 

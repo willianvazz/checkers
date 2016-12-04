@@ -12,17 +12,19 @@ Chat.allow({
 Meteor.methods({
 	'message.insert'(text, clientToken){
 		//make sure the user is logged before adding a task
-		if( !this.userId || !token.validateToken(clientToken) ){
+		if( !this.userId ){
 			throw new Meteor.Error('not-authorized');
 		}
 
-		check(text, String);
-		Chat.insert({
-			text,
-			createdAt: new Date(),
-			owner: this.userId,
-			username: Meteor.users.findOne(this.userId).username,
-		});
+		if (token.validateToken(clientToken, this.connection)){
+			check(text, String);
+			Chat.insert({
+				text,
+				createdAt: new Date(),
+				owner: this.userId,
+				username: Meteor.users.findOne(this.userId).username,
+			});
+		}
 	},
 });
 

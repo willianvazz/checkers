@@ -17,20 +17,21 @@ Template.Intro.onCreated(function (){
 });
 
 Template.Intro.helpers({
+	challenger(){
+		if(Meteor.user()){
+			return Meteor.user().challenger;
+		}
+	},
 	// checking if a user has been challenged
 	isChallenged(){
-		try{
+		if(Meteor.user()){
 			return Meteor.user().isChallenged;
-		}catch(err){
-			return "";
 		}
 	},
 	//check if the challenge has been accepted
 	challengeAccepted(){
-		try{
+		if (Meteor.user()){
 			return Meteor.user().matchStatus;
-		}catch(err){
-			return "";
 		}
 	},
 	//redirect the user if challenge was accepted

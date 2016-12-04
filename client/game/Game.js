@@ -19,11 +19,11 @@ Template.Game.helpers({
       var color = "",
           svgStage = document.getElementById("svgStage");
 
-      var game = Game.find().fetch()[0];
+     var game = Game.find().fetch()[0];
 
       for(let i = 0; i < game.pieces.length; i++) {        
-        if (document.getElementById(i)){
-          svgStage.removeChild(document.getElementById(i))
+        if (document.getElementById(game.pieces[i].id)){
+          svgStage.removeChild(document.getElementById(game.pieces[i].id))
         }
         var cir = document.createElementNS( svgns, "circle" );
         cir.setAttributeNS( null, "r", 25 );
@@ -31,8 +31,11 @@ Template.Game.helpers({
         cir.setAttribute( "cy", game.pieces[i].cy );
         cir.setAttribute( "fill", game.pieces[i].fill );
         cir.setAttribute( "id", game.pieces[i].id );
+        cir.setAttribute( "data-pos", game.pieces[i]['data-pos'] );
         cir.setAttribute( "class", game.pieces[i].class );
         svgStage.appendChild(cir);
+
+        setSquareOccupation(game.pieces[i].id);
 
         cir.addEventListener( "mousedown", function(){
           setMove( game.pieces[i].id )
@@ -121,39 +124,54 @@ function mouseUpEvListener() {
 }
 
 function checkHit(x, y) {
-  // document.getElementById( "output" ).firstChild.data = "X: " + x + ", Y: " + y;
-  var token = Session.get("mySecretToken");
+  var newSquare = getSquare(x, y),
+      currentSquare = getSquare(myX, myY),
+      moverEle = document.getElementById( moverId );
 
-  //now check for a hit...
+  if (validPieceMove()){
+    currentSquare.removeAttribute("data-occupied");
+
+    Meteor.call('game.updatePiece', Meteor.user().matchId, moverEle.getAttribute("data-pos"),
+      newSquare.getBBox().x + 40, newSquare.getBBox().y + 40, Session.get("mySecretToken"));
+
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function validPieceMove(){
+  var piece = document.getElementById( moverId );
+  var square = getSquare(piece.getAttribute("cx"), piece.getAttribute("cy"));
+  var newY = piece.getAttribute("cy");
+  if(piece.getAttribute("id").includes(Meteor.user().username)){
+    if((piece.getAttribute("data-pos") < 12 && (newY > myY + 40)) || 
+        (piece.getAttribute("data-pos") >= 12 && (newY < myY - 40))){
+      if(!square.getAttribute("data-occupied")){
+        return true;  
+      }      
+    }
+  }
+  return false;
+}
+
+function setSquareOccupation(pieceId){
+  var piece = document.getElementById(pieceId);
+  var square = getSquare(piece.getAttribute("cx"), piece.getAttribute("cy"));
+
+  square.setAttribute("data-occupied", pieceId);
+}
+
+function getSquare(x, y){
   for( var i = 0; i < ROWS; i++ ){
     for (var j = 0; j < COLS; j++) {
-      var drop = document.getElementById( "target_" + i + j ).getBBox();
+      var square = document.getElementById( "target_" + i + j );
 
-      //console.log(drop);
-      for( var k in drop ){
-        // console.log(k, drop[k]);
-      }
-
-      //fill in the target coord
-      // document.getElementById( "output2" ).firstChild.nodeValue = "target_" + i + j;
-
-      if( x > drop.x && x < ( drop.x + drop.width ) &&
-        y > drop.y && y < ( drop.y + drop.height ) ){
-        var moverEle = document.getElementById( moverId );
-        var newY = moverEle.getAttribute("cy");
-        //console.log("myY:", myY, "newY:", newY);
-        if( ((j + i) %2 != 0 ) && (newY > myY)){
-          //Center the piece to the square
-          moverEle.setAttribute( "cx", drop.x + 40);
-          moverEle.setAttribute( "cy", drop.y + 40);
-
-          Meteor.call('game.updatePiece', Meteor.user().matchId, moverEle.getAttribute("id"),
-            drop.x + 40, drop.y + 40, token);
-
-          return true;
-        }else{
-          return false;
-        }
+      // returning only odd (black) squares
+      if( x > square.getBBox().x && x < ( square.getBBox().x + square.getBBox().width ) && 
+          y > square.getBBox().y && y < ( square.getBBox().y + square.getBBox().height ) 
+          && ((j + i) %2 != 0 )){
+        return square;
       }
     }
   }
