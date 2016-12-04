@@ -4,8 +4,8 @@ Meteor.publish('chat', function(){
 	return Chat.find( {} );
 });
 
-Meteor.publish('gameutil', function(){
-	return GameUtil.find( {} );
+Meteor.publish('game', function(gameId){
+	return Game.find( { _id: gameId } );
 });
 
 //Publishing which users are online

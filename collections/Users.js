@@ -1,4 +1,5 @@
 var token = require('../lib/token.js');
+var game = require('../collections/Game.js')
 
 Meteor.methods({
 	'user.createChallenge'(challengedId, clientToken){
@@ -31,7 +32,8 @@ Meteor.methods({
 			throw new Meteor.Error('not-authorized');
 		}
 
-		matchId = "1234";
+		matchId = game.createGame(Meteor.user().challenger, Meteor.user().username);
+
 		Meteor.users.update(Meteor.userId(), {
 			$set: {
 				matchStatus: true,
