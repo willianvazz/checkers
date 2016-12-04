@@ -1,6 +1,11 @@
 import { Session } from 'meteor/session';
 
 Template.Intro.onRendered(function(){
+	
+});
+
+Template.Intro.onCreated(function (){
+	Meteor.subscribe('gameutil');
 	Meteor.call('getUserInformation', function(error, result){
 		if(error){
 			//Error handling code
@@ -10,10 +15,6 @@ Template.Intro.onRendered(function(){
 			Meteor.call('user.clearChallenge', Meteor.userId(), result);
 		}
 	});
-});
-
-Template.Intro.onCreated(function (){
-	Meteor.subscribe('gameutil');
 });
 
 Template.Intro.helpers({

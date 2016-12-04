@@ -18,7 +18,7 @@ Meteor.methods({
 		}
 
 		if (token.validateToken(clientToken, this.connection)){
-			var game = Game.update({_id: gameId, "pieces.data-pos": parseInt(piecePos) }, {
+			Game.update({_id: gameId, "pieces.data-pos": parseInt(piecePos) }, {
 				$set: {
 					"pieces.$.cx": cx,
 					"pieces.$.cy": cy,
@@ -27,6 +27,19 @@ Meteor.methods({
 			});
 		}
 	},
+	'game.capturePiece'(gameId, piecePos, clientToken){
+		if( !this.userId ){
+			throw new Meteor.Error('not-authorized');
+		}
+
+		if (token.validateToken(clientToken, this.connection)){
+			var game = Game.update({_id: gameId, "pieces.data-pos": parseInt(piecePos) }, {
+				$set: {
+					"pieces.$.captured": true
+				}
+			});
+		}
+	}
 });
 
 var createGame = function(challenger, challenged) {

@@ -6,7 +6,8 @@ const ROWS = 8,
 var svgns = "http://www.w3.org/2000/svg",
   moverId,
   myX,
-  myY;
+  myY,
+  game;
 
 //allowing the client to have access to collection chat from the server
 Template.Game.onCreated(function (){
@@ -19,27 +20,33 @@ Template.Game.helpers({
       var color = "",
           svgStage = document.getElementById("svgStage");
 
-     var game = Game.find().fetch()[0];
+     game = Game.find().fetch()[0];
 
-      for(let i = 0; i < game.pieces.length; i++) {        
-        if (document.getElementById(game.pieces[i].id)){
-          svgStage.removeChild(document.getElementById(game.pieces[i].id))
+      for(let i = 0; i < game.pieces.length; i++) {
+        let oldPiece = document.getElementById(game.pieces[i].id)       
+        if (oldPiece){          
+          var square = getSquare(oldPiece.getAttribute("cx"), oldPiece.getAttribute("cy"));
+          square.removeAttribute("data-occupied");
+          svgStage.removeChild(oldPiece);
         }
-        var cir = document.createElementNS( svgns, "circle" );
-        cir.setAttributeNS( null, "r", 25 );
-        cir.setAttribute( "cx", game.pieces[i].cx );
-        cir.setAttribute( "cy", game.pieces[i].cy );
-        cir.setAttribute( "fill", game.pieces[i].fill );
-        cir.setAttribute( "id", game.pieces[i].id );
-        cir.setAttribute( "data-pos", game.pieces[i]['data-pos'] );
-        cir.setAttribute( "class", game.pieces[i].class );
-        svgStage.appendChild(cir);
 
-        setSquareOccupation(game.pieces[i].id);
+        if (!game.pieces[i].captured){
+          var cir = document.createElementNS( svgns, "circle" );
+          cir.setAttributeNS( null, "r", 25 );
+          cir.setAttribute( "cx", game.pieces[i].cx );
+          cir.setAttribute( "cy", game.pieces[i].cy );
+          cir.setAttribute( "fill", game.pieces[i].fill );
+          cir.setAttribute( "id", game.pieces[i].id );
+          cir.setAttribute( "data-pos", game.pieces[i]['data-pos'] );
+          cir.setAttribute( "class", game.pieces[i].class );
+          svgStage.appendChild(cir);
 
-        cir.addEventListener( "mousedown", function(){
-          setMove( game.pieces[i].id )
-        }, false );  
+          setSquareOccupation(game.pieces[i].id);
+
+          cir.addEventListener( "mousedown", function(){
+            setMove( game.pieces[i].id )
+          }, false );
+        }
       }
       init();
     }
@@ -140,16 +147,61 @@ function checkHit(x, y) {
   }
 }
 
+function checkCaptured(currentSquare, newSquare){
+  var currentSquareId = currentSquare.getAttribute("id"),
+      newSquareId = newSquare.getAttribute("id"),
+      middleSquare = null;
+
+  var firstDigitDiff = parseInt(currentSquareId.substr(7,1)) - parseInt(newSquareId.substr(7,1))
+      lastDigitDiff = parseInt(currentSquareId.substr(8,1)) - parseInt(newSquareId.substr(8,1));
+
+  if (Math.abs(firstDigitDiff) === 2 && Math.abs(lastDigitDiff) === 2){
+    //piece is going up
+    if (lastDigitDiff < 0){
+      if (firstDigitDiff < 0){
+        middleSquare = document.getElementById("target_" + (parseInt(currentSquareId.substr(7,1)) + 1) + (parseInt(currentSquareId.substr(8,1)) + 1));  
+      } else {
+        middleSquare = document.getElementById("target_" + (parseInt(currentSquareId.substr(7,1)) - 1) + (parseInt(currentSquareId.substr(8,1)) + 1));  
+      }      
+    } 
+    //piece is going down
+    else {
+      if (firstDigitDiff < 0){
+        middleSquare = document.getElementById("target_" + (parseInt(currentSquareId.substr(7,1)) + 1) + (parseInt(currentSquareId.substr(8,1)) - 1));  
+      } else {
+        middleSquare = document.getElementById("target_" + (parseInt(currentSquareId.substr(7,1)) - 1) + (parseInt(currentSquareId.substr(8,1)) - 1));  
+      }
+    }
+
+    if (middleSquare.getAttribute("data-occupied")) {
+      var pieceCaptured = document.getElementById(middleSquare.getAttribute("data-occupied"));
+      middleSquare.removeAttribute("data-occupied");
+      Meteor.call('game.capturePiece', Meteor.user().matchId, pieceCaptured.getAttribute("data-pos"), 
+        Session.get("mySecretToken"));
+    }
+  }
+}
+
 function validPieceMove(){
   var piece = document.getElementById( moverId );
-  var square = getSquare(piece.getAttribute("cx"), piece.getAttribute("cy"));
-  var newY = piece.getAttribute("cy");
-  if(piece.getAttribute("id").includes(Meteor.user().username)){
-    if((piece.getAttribute("data-pos") < 12 && (newY > myY + 40)) || 
-        (piece.getAttribute("data-pos") >= 12 && (newY < myY - 40))){
-      if(!square.getAttribute("data-occupied")){
-        return true;  
-      }      
+  var newSquare = getSquare(piece.getAttribute("cx"), piece.getAttribute("cy")),
+      currentSquare = getSquare(myX, myY)
+      newY = piece.getAttribute("cy");
+
+  //checking if it's the user's turn
+  if(game.turn === Meteor.user().username){
+    //checking if the user is the owner of the piece
+    if(piece.getAttribute("id").includes(Meteor.user().username)){
+      //checking if the piece is moving in a valid direction
+      if((piece.getAttribute("data-pos") < 12 && (newY > myY + 40)) || 
+          (piece.getAttribute("data-pos") >= 12 && (newY < myY - 40))){
+        //checking if the new square is already occupied by another piece
+        if(!newSquare.getAttribute("data-occupied")){
+          //checking if a piece was captured during the move
+          checkCaptured(currentSquare, newSquare)
+          return true;                
+        }      
+      }
     }
   }
   return false;
@@ -179,14 +231,10 @@ function getSquare(x, y){
 
 function setMove( id ){
   moverId = id;
-  console.log("moverId: ", moverId);
+  //console.log("moverId: ", moverId);
 
   myX = parseInt( document.getElementById( moverId ).getAttribute( "cx" ) );
   myY = parseInt( document.getElementById( moverId ).getAttribute( "cy" ) );
 
-  console.log("myX:", myX, " myY:", myY);
-}
-
-function hello(){
-  console.log("hello");
+  //console.log("myX:", myX, " myY:", myY);
 }
