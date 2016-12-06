@@ -9,6 +9,7 @@ Template.PeopleOnline.helpers({
 		return Meteor.users.find({ 
 						"status.online": true, 
 						_id: { $ne: Meteor.userId() },
+						matchId: null
 		});
 	}
 });

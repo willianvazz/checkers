@@ -3,20 +3,25 @@
 		<h3><i class="fa fa-info-circle" aria-hidden="true"></i> Game Information</h3>
 		
 		<div class="wrap-game-players">
-			<p class="game-p1">Player 1</p>
+			<p class="game-p2 {{ #if player2Turn }}my-turn{{/if}}">{{player2}}</p>
 			<p class="game-vs">-VS-</p>
-			<p class="game-p2">Player 2</p>
+			<p class="game-p1 {{ #if player1Turn }}my-turn{{/if}}">{{player1}}</p>
+			
 		</div>
 		
 		<h3><i class="fa fa-trophy" aria-hidden="true"></i> Scores</h3>
 		<div class="wrap-game-scores">
-			<p><i class="fa fa-circle red-piece" aria-hidden="true"></i> 0 pieces</p>
-			<p><i class="fa fa-circle green-piece" aria-hidden="true"></i> 0 pieces</p>
+			<p><i class="fa fa-circle green-piece" aria-hidden="true"></i> {{greenPieces}} lost pieces</p>
+			<p><i class="fa fa-circle red-piece" aria-hidden="true"></i> {{redPieces}} lost pieces</p>
 		</div>
 
 		<h3><i class="fa fa-comments"></i> Chat</h3>
 		<div class="wrap-messages game-messages">
-			
+			{{#each messages}}
+				<div class="wrap-message">
+					<p class="chat-message {{#if ownMessage username=owner }}own-message{{/if}}">{{username}}: {{text}}</p>
+				</div>
+			{{/each}}
 		</div>
 		{{#if currentUser}}
 			<form class="new-message">

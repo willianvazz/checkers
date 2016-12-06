@@ -39,7 +39,21 @@ Meteor.methods({
 				}
 			});
 		}
-	}
+	},
+	// 'game.insertMessage'(gameId, text, clientToken){
+	// 	if( !this.userId ){
+	// 		throw new Meteor.Error('not-authorized');
+	// 	}
+
+	// 	if (token.validateToken(clientToken, this.connection)){
+	// 		game.insert({
+	// 			text,
+	// 			createdAt: new Date(),
+	// 			owner: this.userId,
+	// 			username: Meteor.users.findOne(this.userId).username,
+	// 		});
+	// 	}
+	// }
 });
 
 var createGame = function(challenger, challenged) {
