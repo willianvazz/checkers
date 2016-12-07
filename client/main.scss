@@ -63,13 +63,13 @@ h4{
 	background: $darkOrange;
 }
 .wrapper{
-	margin-top: 60px;
-	padding: 50px 100px;
+	margin-top: 100px;
+	padding: 0 100px;
 	clear: both;
 }
 /* -----STYLE FOR HOME STARTS----- */
 .wrapper-home{
-	margin: 110px 100px;
+	margin: 110px 100px 0 100px;
 	padding: 10px;
 	background: $lightBlueGray;
 	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
@@ -92,11 +92,15 @@ h4{
 .wrap-intro{
 	width: 100%;
 }
+.wrap-challenge{
+	height: 50px;
+	clear: both;
+}
 .challenge{
 	padding: 10px;
 	margin-bottom: 10px;
-	background: $lightBlueGray;
 	height: 50px;
+	background: $lightBlueGray;
 	animation: bounce 2s linear infinite;
 }
 .challenge p{
@@ -181,13 +185,20 @@ h4{
 .deny:hover{
 	background: #962b2b;
 }
-.wrap-rules-intro{
+/* -----STYLE FOR INTRO ENDS----- */
+
+/* -----STYLE FOR RULES START----- */
+.wrap-rules-home{
+	padding: 0px 100px;
+}
+
+.rules{
 	margin-top: 20px;
 	padding: 10px;
 	background: $lightBlueGray;
 	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
-/* -----STYLE FOR INTRO ENDS----- */
+/* -----STYLE FOR RULES ENDS----- */
 
 /* -----STYLE FOR CHAT STARTS----- */
 .wrap-chat{
@@ -291,7 +302,7 @@ h4{
 	border: 1px solid black;
 	float: left;
 	box-shadow: 0 2px 22px rgba(0, 0, 0, .42), 0 1px 5px rgba(0, 0, 0, 0.34);
-	margin-bottom: 50px;
+	margin-bottom: 20px;
 }
 .wrap-game-info{
 	background: red;
@@ -354,7 +365,31 @@ h4{
 }
 /* -----STYLE FOR RULES ENDS----- */
 
+/* CSS FOR MOBILE STARTS */
+@media screen and (max-width: 1000px){
+	.wrapper{
+		padding: 0;
+	}
+	.wrap-intro, .wrap-rules-intro{
+		height: auto;
+		padding: 0 100px;
+	}
+	.wrap-chat{
+		margin-bottom: 20px;
+	}
+	.wrap-chat, .wrap-peopleOnline{
+		width: 100%;
+	}
+	.challenge{
+		width: 100%;
+		position: fixed;
+	}
+	.wrap-game-info{
+		width: 640px;
+		margin-left: 0px;
+	}
+}
 
-
+/* CSS FOR MOBILE STARTS */
 
 
