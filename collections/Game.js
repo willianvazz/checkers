@@ -40,20 +40,20 @@ Meteor.methods({
 			});
 		}
 	},
-	// 'game.insertMessage'(gameId, text, clientToken){
-	// 	if( !this.userId ){
-	// 		throw new Meteor.Error('not-authorized');
-	// 	}
+	'game.becomeCrown'(gameId, piecePos, clientToken){
+		if( !this.userId ){
+			throw new Meteor.Error('not-authorized');
+		}
 
-	// 	if (token.validateToken(clientToken, this.connection)){
-	// 		game.insert({
-	// 			text,
-	// 			createdAt: new Date(),
-	// 			owner: this.userId,
-	// 			username: Meteor.users.findOne(this.userId).username,
-	// 		});
-	// 	}
-	// }
+		if (token.validateToken(clientToken, this.connection)){
+			var game = Game.update({_id: gameId, "pieces.data-pos": parseInt(piecePos) }, {
+				$set: {
+					"pieces.$.crown": true
+				}
+			});
+		}
+	},
+
 });
 
 var createGame = function(challenger, challenged) {
@@ -64,7 +64,7 @@ var createGame = function(challenger, challenged) {
 		"player2": challenged,
 		"pieces": pieces,
 		"turn": challenged,
-		"result": null
+		"result": null,
 	});
 
 	return gameId;

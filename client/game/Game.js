@@ -130,8 +130,8 @@ function mouseUpEvListener() {
 
 function checkHit(x, y) {
 	var newSquare = getSquare(x, y),
-			currentSquare = getSquare(myX, myY),
-			moverEle = document.getElementById( moverId );
+		currentSquare = getSquare(myX, myY),
+		moverEle = document.getElementById( moverId );
 
 	if (validPieceMove()){
 		currentSquare.removeAttribute("data-occupied");
@@ -184,9 +184,11 @@ function checkCaptured(currentSquare, newSquare){
 function validPieceMove(){
 	var piece = document.getElementById( moverId );
 	var newSquare = getSquare(piece.getAttribute("cx"), piece.getAttribute("cy")),
-			currentSquare = getSquare(myX, myY)
-			newY = piece.getAttribute("cy");
+		currentSquare = getSquare(myX, myY),
+		newY = piece.getAttribute("cy");
 
+	var pieceId = piece.getAttribute("data-pos");
+	game = Game.find().fetch()[0];
 	//checking if it's the user's turn
 	if(game.turn === Meteor.user().username){
 		//checking if the user is the owner of the piece
@@ -197,13 +199,60 @@ function validPieceMove(){
 				//checking if the new square is already occupied by another piece
 				if(!newSquare.getAttribute("data-occupied")){
 					//checking if a piece was captured during the move
-					checkCaptured(currentSquare, newSquare)
+					checkCaptured(currentSquare, newSquare);
+					checkCrownSquare(moverId);
 					return true;                
 				}      
 			}
 		}
 	}
+
+	// //checking if it's the user's turn
+	// if(game.turn === Meteor.user().username){
+	// 	//checking if the user is the owner of the piece
+	// 	if(piece.getAttribute("id").includes(Meteor.user().username)){
+	// 		//checking if the new square is already occupied by another piece
+	// 		if(!newSquare.getAttribute("data-occupied")){
+	// 			//checking if the piece is moving in a valid direction
+	// 			if((piece.getAttribute("data-pos") < 12 && (newY > myY + 40)) || 
+	// 					(piece.getAttribute("data-pos") >= 12 && (newY < myY - 40))){
+	// 				//checking if it is a crown piece
+	// 				if(!game.pieces[pieceId].crown){
+	// 					//checking if a piece was captured during the move
+	// 					checkCaptured(currentSquare, newSquare);
+	// 					checkCrownSquare(moverId);
+	// 					return true;                
+	// 				}else if(game.pieces[pieceId].crown){
+	// 				//checking if a piece was captured during the move
+	// 					checkCaptured(currentSquare, newSquare);
+	// 					checkCrownSquare(moverId);
+	// 					return true;
+	// 				}   
+	// 			}
+	// 		}
+	// 	}
+	// }
 	return false;
+}
+
+function checkCrownSquare(pieceId){
+	var piece = document.getElementById(pieceId),
+		square = getSquare(piece.getAttribute("cx"), piece.getAttribute("cy")),
+		x = parseInt(square.getAttribute("x")),
+		y = parseInt(square.getAttribute("y")),
+		color = piece.getAttribute("fill");
+
+	console.log("pieceId", pieceId);
+	console.log("x", x);
+	console.log("y", y);
+	console.log("color", color);
+
+	if( (x <= 560) && (y == 0) && (color == "green") || (y == 560) && (x <= 480) && (color == "red") ){
+		console.log("I am here");
+		//updating crowning status
+		Meteor.call('game.becomeCrown', Meteor.user().matchId, piece.getAttribute("data-pos"), 
+			Session.get("mySecretToken"));
+	}
 }
 
 function setSquareOccupation(pieceId){

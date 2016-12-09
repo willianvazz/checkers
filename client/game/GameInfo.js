@@ -44,7 +44,6 @@ Template.GameInfo.helpers({
 		try{
 			var game = Game.find().fetch()[0];
 			if( (game.turn === Meteor.user().username) && (game.player1 === Meteor.user().username) ){
-				console.log(game.pieces[3].fill);
 				return  true;
 			}else{
 				return false;
