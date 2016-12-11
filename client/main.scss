@@ -311,6 +311,7 @@ h4{
 	margin-left: 20px;
 	background: $lightBlueGray;
 	height: 640px;
+	float: right;
 }
 .wrap-game-players{
 	margin-top: 30px;
@@ -365,6 +366,15 @@ h4{
 }
 /* -----STYLE FOR RULES ENDS----- */
 
+/* -----STYLE FOR GAME OVER STARTS----- */
+.wrap-game-over{
+	margin-bottom: 10px;
+	background: #F2DEDE;
+	padding: 0 10px 10px 10px;
+	border-radius: 5px;
+}
+/* -----STYLE FOR GAME OVER ENDS----- */
+
 /* CSS FOR MOBILE STARTS */
 @media screen and (max-width: 1000px){
 	.wrapper{
@@ -389,7 +399,6 @@ h4{
 		margin-left: 0px;
 	}
 }
-
 /* CSS FOR MOBILE STARTS */
 
 

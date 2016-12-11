@@ -1,4 +1,7 @@
 <template name="Game">
+	{{#if EndGame}}
+		{{> GameOver}}
+	{{/if}}
 	<svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="svgStage" width="640px" height="640px" 
 	onload="init( evt );"></svg>
 	{{#if Template.subscriptionsReady}}

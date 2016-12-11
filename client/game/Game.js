@@ -52,6 +52,28 @@ Template.Game.helpers({
 		}
 		catch(err){
 		}
+	},
+
+	EndGame(){
+		try{
+			var countGreen = 0, 
+				countRed = 0;
+			game = Game.find().fetch()[0];
+
+			for( var i = 0; i < game.pieces.length; i++){
+				if( (game.pieces[i].fill === "green") && (game.pieces[i].captured == true) ){
+					countGreen++;	
+				}
+				if( (game.pieces[i].fill === "red") && (game.pieces[i].captured == true) ){
+					countRed++;	
+				} 
+			}
+
+			if( (countGreen == 12) || (countRed == 12) ){
+				return true;
+			}
+			return false;
+		}catch(err){}
 	}
 });
 
