@@ -38,7 +38,11 @@ Template.Game.helpers({
 					cir.setAttribute( "fill", game.pieces[i].fill );
 					cir.setAttribute( "id", game.pieces[i].id );
 					cir.setAttribute( "data-pos", game.pieces[i]['data-pos'] );
-					cir.setAttribute( "class", game.pieces[i].class );
+          if (game.pieces[i].crown){
+            cir.setAttribute( "class", game.pieces[i].class + " crown" );
+          } else {
+            cir.setAttribute( "class", game.pieces[i].class );
+          }
 					svgStage.appendChild(cir);
 					//setting square to occupied
 					setSquareOccupation(game.pieces[i].id);
@@ -170,7 +174,8 @@ function checkHit(x, y) {
 function checkCaptured(currentSquare, newSquare){
 	var currentSquareId = currentSquare.getAttribute("id"),
 		newSquareId = newSquare.getAttribute("id"),
-		middleSquare = null;
+		middleSquare = null,
+    movingPiece = document.getElementById( moverId );
 
 	var firstDigitDiff = parseInt(currentSquareId.substr(7,1)) - parseInt(newSquareId.substr(7,1))
 		lastDigitDiff = parseInt(currentSquareId.substr(8,1)) - parseInt(newSquareId.substr(8,1));
@@ -195,10 +200,12 @@ function checkCaptured(currentSquare, newSquare){
 
 		if (middleSquare.getAttribute("data-occupied")) {
 			var pieceCaptured = document.getElementById(middleSquare.getAttribute("data-occupied"));
-			middleSquare.removeAttribute("data-occupied");
-			//removing piece if it was captured
-			Meteor.call('game.capturePiece', Meteor.user().matchId, pieceCaptured.getAttribute("data-pos"), 
-				Session.get("mySecretToken"));
+      if (movingPiece.getAttribute("fill") != pieceCaptured.getAttribute("fill")){
+  			middleSquare.removeAttribute("data-occupied");
+  			//removing piece if it was captured
+  			Meteor.call('game.capturePiece', Meteor.user().matchId, pieceCaptured.getAttribute("data-pos"), 
+  				Session.get("mySecretToken"));
+      }
 		}
 	}
 }
@@ -217,7 +224,8 @@ function validPieceMove(){
 		if(piece.getAttribute("id").includes(Meteor.user().username)){
 			//checking if the piece is moving in a valid direction
 			if((piece.getAttribute("data-pos") < 12 && (newY > myY + 40)) || 
-					(piece.getAttribute("data-pos") >= 12 && (newY < myY - 40))){
+					(piece.getAttribute("data-pos") >= 12 && (newY < myY - 40)) ||
+          (game.pieces[pieceId].crown)){
 				//checking if the new square is already occupied by another piece
 				if(!newSquare.getAttribute("data-occupied")){
 					//checking if a piece was captured during the move
