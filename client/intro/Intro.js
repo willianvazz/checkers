@@ -46,5 +46,10 @@ Template.Intro.events({
 		var token = Session.get("mySecretToken");
 
 		Meteor.call('user.acceptChallenge', token);
+	},
+	'click .deny'(evt){
+		var token = Session.get("mySecretToken");
+
+		Meteor.call('user.clearChallenge', Meteor.userId(), token);
 	}
 });

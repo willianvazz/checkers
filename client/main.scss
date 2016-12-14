@@ -95,6 +95,7 @@ h4{
 .wrap-challenge{
 	height: 50px;
 	clear: both;
+	margin-bottom: 20px;
 }
 .challenge{
 	padding: 10px;
@@ -304,8 +305,56 @@ h4{
 	box-shadow: 0 2px 22px rgba(0, 0, 0, .42), 0 1px 5px rgba(0, 0, 0, 0.34);
 	margin-bottom: 20px;
 }
+.wrap-quit{
+	display: inline-block;
+	width: 430px;
+	margin-left: 20px;
+	float: right;
+	min-height: 30px;
+
+	p{
+		font-size: 16px;
+	}
+}
+.quit-game{
+	text-align: right;
+	cursor: pointer;
+}
+.quit-game-message{
+	display: none;
+}
+.quit-game-yes, .quit-game-no{
+	border-radius: 5px;
+	padding: 5px 20px;
+	color: white;
+	text-align: center;
+	/*float: right;*/
+	margin: 0px 10px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.16), 0 1px 3px rgba(0,0,0,0.23);
+	cursor: pointer;
+}
+.quit-game-yes{
+	background: #1BB13E;
+}
+.quit-game-yes:hover{
+	background: #117027;
+}
+.quit-game-no{
+	background: #C13939;
+}
+.quit-game-no:hover{
+	background: #962b2b;
+}
+.quit-left{
+	padding:5px;
+	height: 50px;
+	animation: bounce 2s linear infinite;
+	background: $lightBlueGray;
+}
+.quit-left:hover{
+	animation:none;
+}
 .wrap-game-info{
-	background: red;
 	display: inline-block;
 	width: 430px;
 	margin-left: 20px;
@@ -354,8 +403,11 @@ h4{
 .green-piece{
 	color: green;
 }
-.my-turn{
+.my-turn, .opponent-turn{
 	animation: bounce 2s linear infinite;
+}
+.crown{
+	border: 1px solid white;
 }
 /* -----STYLE FOR GAME ENDS----- */
 /* -----STYLE FOR RULES STARTS----- */
@@ -397,6 +449,7 @@ h4{
 	.wrap-game-info{
 		width: 640px;
 		margin-left: 0px;
+		float: none;
 	}
 }
 /* CSS FOR MOBILE STARTS */

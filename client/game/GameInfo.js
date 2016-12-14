@@ -23,6 +23,23 @@ Template.GameInfo.events({
 		//clear the form
 		target.text.value = '';
 	},
+	'click .quit-game'(){
+		document.getElementsByClassName('quit-game-message')[0].style.display = "block";
+		document.getElementsByClassName('quit-game')[0].style.display = "none";
+	},
+	'click .quit-game-yes'(){
+		Meteor.call('game.quit', Meteor.user().matchId, Session.get("mySecretToken"));
+		Meteor.call('user.clearChallenge', Meteor.userId(), Session.get("mySecretToken"));
+		FlowRouter.redirect( '/intro');
+	},
+	'click .quit-game-no'(){
+		document.getElementsByClassName('quit-game-message')[0].style.display = "none";
+		document.getElementsByClassName('quit-game')[0].style.display = "block";
+	},
+	'quit-left'(){
+		Meteor.call('user.clearChallenge', Meteor.userId(), Session.get("mySecretToken"));
+		FlowRouter.redirect( '/intro');
+	}
 });
 
 Template.GameInfo.helpers({
@@ -39,6 +56,12 @@ Template.GameInfo.helpers({
 		if(userMessage == user){
 			return true;
 		}
+	},
+	quitGame(){
+		try{
+			var game = Game.find().fetch()[0];
+			return game.quit;
+		}catch(err){}
 	},
 	player1Turn(){
 		try{
@@ -81,8 +104,6 @@ Template.GameInfo.helpers({
 		try{
 			var game = Game.find().fetch()[0];
 			for( var i = 0; i < game.pieces.length; i++){
-				// console.log(game.pieces[i].fill, count);
-				// count++;
 				if( (game.pieces[i].fill === "green") && (game.pieces[i].captured == true) ){
 					count++;	
 				}
@@ -95,8 +116,6 @@ Template.GameInfo.helpers({
 		try{
 			var game = Game.find().fetch()[0];
 			for( var i = 0; i < game.pieces.length; i++){
-				// console.log(game.pieces[i].fill, count);
-				// count++;
 				if( (game.pieces[i].fill === "red") && (game.pieces[i].captured == true) ){
 					count++;	
 				} 

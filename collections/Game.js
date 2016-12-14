@@ -53,7 +53,19 @@ Meteor.methods({
 			});
 		}
 	},
+	'game.quit'(gameId, clientToken){
+		if( !this.userId ){
+			throw new Meteor.Error('not-authorized');
+		}
 
+		if (token.validateToken(clientToken, this.connection)){
+			Game.update({_id: gameId}, {
+				$set: {
+					quit: true
+				}
+			});
+		}
+	},
 });
 
 var createGame = function(challenger, challenged) {
@@ -65,6 +77,7 @@ var createGame = function(challenger, challenged) {
 		"pieces": pieces,
 		"turn": challenged,
 		"result": null,
+		"quit": false
 	});
 
 	return gameId;

@@ -1,7 +1,19 @@
 <template name="GameInfo">
+	<div class="wrap-quit">
+		{{#unless quitGame}}
+			<p class="quit-game-message">
+				Are you sure you wanna leave?
+				<span class="quit-game-yes">Yes</span>
+				<span class="quit-game-no">No</span>
+			</p>
+			<p class="quit-game">Quit Game</p>
+		{{else}}
+			<p class="quit-left">Your opponent has left the game <a href="/intro">click here to go back to the home page</a>.</p>
+		{{/unless}}
+
+	</div>
 	<div class="wrap-game-info">
 		<h3><i class="fa fa-info-circle" aria-hidden="true"></i> Game Information</h3>
-		
 		<div class="wrap-game-players">
 			<p class="game-p2 {{ #if player2Turn }}my-turn{{/if}}">{{player2}}</p>
 			<p class="game-vs">-VS-</p>

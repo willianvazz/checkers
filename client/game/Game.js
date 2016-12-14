@@ -38,11 +38,11 @@ Template.Game.helpers({
 					cir.setAttribute( "fill", game.pieces[i].fill );
 					cir.setAttribute( "id", game.pieces[i].id );
 					cir.setAttribute( "data-pos", game.pieces[i]['data-pos'] );
-          if (game.pieces[i].crown){
-            cir.setAttribute( "class", game.pieces[i].class + " crown" );
-          } else {
-            cir.setAttribute( "class", game.pieces[i].class );
-          }
+					cir.setAttribute( "class", game.pieces[i].class );
+					if (game.pieces[i].crown){
+						cir.setAttribute( "stroke", "white" );
+						cir.setAttribute( "stroke-width", 4 );
+					} 
 					svgStage.appendChild(cir);
 					//setting square to occupied
 					setSquareOccupation(game.pieces[i].id);
@@ -225,7 +225,7 @@ function validPieceMove(){
 			//checking if the piece is moving in a valid direction
 			if((piece.getAttribute("data-pos") < 12 && (newY > myY + 40)) || 
 					(piece.getAttribute("data-pos") >= 12 && (newY < myY - 40)) ||
-          (game.pieces[pieceId].crown)){
+					(game.pieces[pieceId].crown)){
 				//checking if the new square is already occupied by another piece
 				if(!newSquare.getAttribute("data-occupied")){
 					//checking if a piece was captured during the move
@@ -236,32 +236,6 @@ function validPieceMove(){
 			}
 		}
 	}
-
-	// //checking if it's the user's turn
-	// if(game.turn === Meteor.user().username){
-	// 	//checking if the user is the owner of the piece
-	// 	if(piece.getAttribute("id").includes(Meteor.user().username)){
-	// 		//checking if the new square is already occupied by another piece
-	// 		if(!newSquare.getAttribute("data-occupied")){
-	// 			//checking if the piece is moving in a valid direction
-	// 			if((piece.getAttribute("data-pos") < 12 && (newY > myY + 40)) || 
-	// 					(piece.getAttribute("data-pos") >= 12 && (newY < myY - 40))){
-	// 				//checking if it is a crown piece
-	// 				if(!game.pieces[pieceId].crown){
-	// 					//checking if a piece was captured during the move
-	// 					checkCaptured(currentSquare, newSquare);
-	// 					checkCrownSquare(moverId);
-	// 					return true;                
-	// 				}else if(game.pieces[pieceId].crown){
-	// 				//checking if a piece was captured during the move
-	// 					checkCaptured(currentSquare, newSquare);
-	// 					checkCrownSquare(moverId);
-	// 					return true;
-	// 				}   
-	// 			}
-	// 		}
-	// 	}
-	// }
 	return false;
 }
 
@@ -272,13 +246,7 @@ function checkCrownSquare(pieceId){
 		y = parseInt(square.getAttribute("y")),
 		color = piece.getAttribute("fill");
 
-	console.log("pieceId", pieceId);
-	console.log("x", x);
-	console.log("y", y);
-	console.log("color", color);
-
 	if( (x <= 560) && (y == 0) && (color == "green") || (y == 560) && (x <= 480) && (color == "red") ){
-		console.log("I am here");
 		//updating crowning status
 		Meteor.call('game.becomeCrown', Meteor.user().matchId, piece.getAttribute("data-pos"), 
 			Session.get("mySecretToken"));
@@ -309,10 +277,7 @@ function getSquare(x, y){
 
 function setMove( id ){
 	moverId = id;
-	//console.log("moverId: ", moverId);
 
 	myX = parseInt( document.getElementById( moverId ).getAttribute( "cx" ) );
 	myY = parseInt( document.getElementById( moverId ).getAttribute( "cy" ) );
-
-	//console.log("myX:", myX, " myY:", myY);
 }
