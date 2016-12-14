@@ -1,4 +1,5 @@
 <template name="GameInfo">
+	{{#if validateUser}}
 	<div class="wrap-quit">
 		{{#unless quitGame}}
 			<p class="quit-game-message">
@@ -41,4 +42,7 @@
 			</form>
 		{{/if}}
 	</div>
+	{{else}}
+		{{redirectIntro}}
+	{{/if}}
 </template>

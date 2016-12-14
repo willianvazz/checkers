@@ -48,6 +48,12 @@ Template.GameInfo.helpers({
 		var gameId = Meteor.user().matchId;
 		return GameChat.find({ gameId });
 	},
+	redirectIntro(){
+		FlowRouter.redirect( '/intro');
+	},
+	validateUser(){
+		return Meteor.user().matchId;
+	},
 	//method to check if it is his own message.
 	ownMessage(usernameMessage){
 		var user = Meteor.userId(),
@@ -59,13 +65,14 @@ Template.GameInfo.helpers({
 	},
 	quitGame(){
 		try{
-			var game = Game.find().fetch()[0];
+			var game = Game.find({"_id": Meteor.user().matchId}).fetch()[0];
+			console.log(game.quit, Meteor.user().matchId);
 			return game.quit;
 		}catch(err){}
 	},
 	player1Turn(){
 		try{
-			var game = Game.find().fetch()[0];
+			var game = Game.find({"_id": Meteor.user().matchId}).fetch()[0];
 			if( (game.turn === Meteor.user().username) && (game.player1 === Meteor.user().username) ){
 				return  true;
 			}else{
@@ -75,7 +82,7 @@ Template.GameInfo.helpers({
 	},
 	player2Turn(){
 		try{
-			var game = Game.find().fetch()[0];
+			var game = Game.find({"_id": Meteor.user().matchId}).fetch()[0];
 			if( (game.turn === Meteor.user().username) && (game.player2 === Meteor.user().username) ){
 				return  true;
 			}else{
@@ -85,7 +92,7 @@ Template.GameInfo.helpers({
 	},
 	player1(){
 		try{
-			var game = Game.find().fetch()[0];
+			var game = Game.find({"_id": Meteor.user().matchId}).fetch()[0];
 			if(Meteor.user()){
 				return game.player1;
 			}
@@ -93,7 +100,7 @@ Template.GameInfo.helpers({
 	},
 	player2(){
 		try{
-			var game = Game.find().fetch()[0];
+			var game = Game.find({"_id": Meteor.user().matchId}).fetch()[0];
 			if(Meteor.user()){
 				return game.player2;
 			}
@@ -102,7 +109,7 @@ Template.GameInfo.helpers({
 	greenPieces(){
 		var count = 0;
 		try{
-			var game = Game.find().fetch()[0];
+			var game = Game.find({"_id": Meteor.user().matchId}).fetch()[0];
 			for( var i = 0; i < game.pieces.length; i++){
 				if( (game.pieces[i].fill === "green") && (game.pieces[i].captured == true) ){
 					count++;	
@@ -114,7 +121,7 @@ Template.GameInfo.helpers({
 	redPieces(){
 		var count = 0;
 		try{
-			var game = Game.find().fetch()[0];
+			var game = Game.find({"_id": Meteor.user().matchId}).fetch()[0];
 			for( var i = 0; i < game.pieces.length; i++){
 				if( (game.pieces[i].fill === "red") && (game.pieces[i].captured == true) ){
 					count++;	

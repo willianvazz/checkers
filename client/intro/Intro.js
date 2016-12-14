@@ -5,19 +5,22 @@ Template.Intro.onRendered(function(){
 });
 
 Template.Intro.onCreated(function (){
-	Meteor.subscribe('gameutil');
-	Meteor.call('getUserInformation', function(error, result){
-		if(error){
-			//Error handling code
-		}
-		else {
-			Session.set("mySecretToken", result);
-			Meteor.call('user.clearChallenge', Meteor.userId(), result);
-		}
-	});
+	
 });
 
 Template.Intro.helpers({
+	clearInfo(){
+		Meteor.call('getUserInformation', function(error, result){
+			if(error){
+				//Error handling code
+			}
+			else {
+				Session.set("mySecretToken", result);
+				Meteor.call('user.clearChallenge', Meteor.userId(), result);
+				
+			}
+		});
+	},
 	challenger(){
 		if(Meteor.user()){
 			return Meteor.user().challenger;

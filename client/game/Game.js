@@ -20,7 +20,7 @@ Template.Game.helpers({
 			var color = "",
 				svgStage = document.getElementById("svgStage");
 		// getting pieces created in the server
-		game = Game.find().fetch()[0];
+		game = Game.find({"_id": Meteor.user().matchId}).fetch()[0];
 		 	//creating pieces
 			for(let i = 0; i < game.pieces.length; i++) {
 				let oldPiece = document.getElementById(game.pieces[i].id)       
@@ -62,7 +62,7 @@ Template.Game.helpers({
 		try{
 			var countGreen = 0, 
 				countRed = 0;
-			game = Game.find().fetch()[0];
+			game = Game.find({"_id": Meteor.user().matchId}).fetch()[0];
 
 			for( var i = 0; i < game.pieces.length; i++){
 				if( (game.pieces[i].fill === "green") && (game.pieces[i].captured == true) ){
@@ -217,7 +217,7 @@ function validPieceMove(){
 		newY = piece.getAttribute("cy");
 
 	var pieceId = piece.getAttribute("data-pos");
-	game = Game.find().fetch()[0];
+	game = Game.find({"_id": Meteor.user().matchId}).fetch()[0];
 	//checking if it's the user's turn
 	if(game.turn === Meteor.user().username){
 		//checking if the user is the owner of the piece

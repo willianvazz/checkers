@@ -1,6 +1,7 @@
 <template name="Intro">
+	{{clearInfo}}
 	{{#if isChallenged}}
-		<div class="wrap-challenge">
+		<div class="wrap-challenge" onload="location.reload();">
 			<div class="challenge">
 				<p><strong>{{challenger}}</strong> has challenged you for a game!</p>
 				<div class="wrap-btn-accept-deny">
