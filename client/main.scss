@@ -359,8 +359,12 @@ h4{
 	width: 430px;
 	margin-left: 20px;
 	background: $lightBlueGray;
-	height: 640px;
+	height: 610px;
 	float: right;
+
+	.wrap-messages{
+		height: 250px;
+	}
 }
 .wrap-game-players{
 	margin-top: 30px;
