@@ -213,30 +213,41 @@ function checkCaptured(currentSquare, newSquare){
 function validPieceMove(){
 	var piece = document.getElementById( moverId );
 	var newSquare = getSquare(piece.getAttribute("cx"), piece.getAttribute("cy")),
-		currentSquare = getSquare(myX, myY),
-		newY = piece.getAttribute("cy");
-
-	var pieceId = piece.getAttribute("data-pos");
+		currentSquare = getSquare(myX, myY);
+			
 	game = Game.find({"_id": Meteor.user().matchId}).fetch()[0];
 	//checking if it's the user's turn
 	if(game.turn === Meteor.user().username){
 		//checking if the user is the owner of the piece
 		if(piece.getAttribute("id").includes(Meteor.user().username)){
 			//checking if the piece is moving in a valid direction
-			if((piece.getAttribute("data-pos") < 12 && (newY > myY + 40)) || 
-					(piece.getAttribute("data-pos") >= 12 && (newY < myY - 40)) ||
-					(game.pieces[pieceId].crown)){
+			if(checkDirection(piece)){
 				//checking if the new square is already occupied by another piece
-				if(!newSquare.getAttribute("data-occupied")){
-					//checking if a piece was captured during the move
-					checkCaptured(currentSquare, newSquare);
-					checkCrownSquare(moverId);
-					return true;                
-				}      
+        if(!newSquare.getAttribute("data-occupied")){
+          //checking if a piece was captured during the move
+          checkCaptured(currentSquare, newSquare);
+          checkCrownSquare(moverId);
+          return true;                
+        }
 			}
 		}
 	}
 	return false;
+}
+
+function checkDirection(piece) {
+  var newY = piece.getAttribute("cy"),
+      newX = piece.getAttribute("cx"),
+      pieceId = piece.getAttribute("data-pos");
+
+  if((((piece.getAttribute("data-pos") < 12 && ((newY > myY + 40) && (newY < myY + 200))) || // pieces at the top can only move downwards 
+        (piece.getAttribute("data-pos") >= 12 && ((newY < myY - 40) && (newY > myY - 200))))  || // pieces at the bottom can only move upwards
+      (game.pieces[pieceId].crown)) && // crowned pieces can move to any direction
+      ((newX > myX + 40) || (newX < myX - 40))){ // pieces can only move diagonally 
+      return true; 
+  } else {
+    return false;
+  }
 }
 
 function checkCrownSquare(pieceId){
